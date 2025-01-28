@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "237934103598",
+    "project_id": "grndlytest",
+    "storage_bucket": "grndlytest.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:237934103598:android:edc9354794b7f179c363bf",
+        "android_client_info": {
+          "package_name": "com.eslieh.duotasks"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyANNBEweCcM2okIE3tL_jVA-yBwe8a_f5s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

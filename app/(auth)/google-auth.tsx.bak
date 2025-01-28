@@ -1,0 +1,228 @@
+import { Ionicons } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
+import { useEffect, useRef, useState } from 'react';
+import {
+    ActivityIndicator,
+    Alert,
+    SafeAreaView,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View
+} from 'react-native';
+import { WebView } from 'react-native-webview';
+import { API_BASE_URL } from '../config';
+
+export default function GoogleAuthScreen() {
+  const router = useRouter();
+  const webViewRef = useRef<WebView>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const googleAuthUrl = `${API_BASE_URL}/auth/login/google`;
+
+  console.log('GoogleAuthScreen rendered');
+  console.log('Google Auth URL:', googleAuthUrl);
+
+  useEffect(() => {
+    console.log('GoogleAuthScreen mounted');
+    return () => {
+      console.log('GoogleAuthScreen unmounted');
+    };
+  }, []);
+
+  const handleNavigationStateChange = (navState: any) => {
+    const { url } = navState;
+
+    // Check if the URL is a deep link callback
+    if (url.includes('duotasks://auth/deep_callback') || url.includes('duotasks:/auth/deep_callback')) {
+      // Parse the URL manually since it's a custom scheme
+      let queryString = '';
+      if (url.includes('?')) {
+        queryString = url.split('?')[1];
+      }
+
+      // Parse query parameters
+      const params: Record<string, string> = {};
+      if (queryString) {
+        queryString.split('&').forEach((param) => {
+          const [key, value] = param.split('=');
+          if (key && value) {
+            params[decodeURIComponent(key)] = decodeURIComponent(value);
+          }
+        });
+      }
+
+      // Check for error
+      if (params.error) {
+        Alert.alert('Authentication Error', params.error, [
+          {
+            text: 'OK',
+            onPress: () => router.back(),
+          },
+        ]);
+        return;
+      }
+
+      // Extract token and user data
+      const token = params.token;
+      const email = params.email;
+      const id = params.id;
+      const name = params.name;
+      const profile = params.profile;
+
+      if (token && email && id && name) {
+        // Navigate to deep callback handler with the data
+        const callbackUrl = `/(auth)/deep_callback?token=${encodeURIComponent(token)}&email=${encodeURIComponent(email)}&id=${encodeURIComponent(id)}&name=${encodeURIComponent(name)}&profile=${encodeURIComponent(profile || '')}`;
+        router.replace(callbackUrl as any);
+      } else {
+        Alert.alert('Authentication Error', 'Missing authentication data', [
+          {
+            text: 'OK',
+            onPress: () => router.back(),
+          },
+        ]);
+      }
+    }
+  };
+
+  return (
+    <SafeAreaView style={styles.container}>
+      <View style={styles.header}>
+        <TouchableOpacity
+          style={styles.backButton}
+          onPress={() => router.back()}
+        >
+          <Ionicons name="arrow-back" size={24} color="#2eac5f" />
+        </TouchableOpacity>
+        <View style={styles.titleContainer}>
+          {loading && (
+            <ActivityIndicator
+              size="small"
+              color="#2eac5f"
+              style={styles.loader}
+            />
+          )}
+        </View>
+      </View>
+
+      {error && (
+        <View style={styles.errorContainer}>
+          <Text style={styles.errorText}>{error}</Text>
+          <TouchableOpacity
+            style={styles.retryButton}
+            onPress={() => {
+              setError(null);
+              setLoading(true);
+              webViewRef.current?.reload();
+            }}
+          >
+            <Text style={styles.retryButtonText}>Retry</Text>
+          </TouchableOpacity>
+        </View>
+      )}
+
+      <WebView
+        ref={webViewRef}
+        source={{ uri: googleAuthUrl }}
+        style={styles.webview}
+        onNavigationStateChange={handleNavigationStateChange}
+        onLoadStart={() => {
+          console.log('WebView load started');
+          setLoading(true);
+        }}
+        onLoadEnd={() => {
+          console.log('WebView load ended');
+          setLoading(false);
+        }}
+        onError={(syntheticEvent) => {
+          const { nativeEvent } = syntheticEvent;
+          console.error('WebView error: ', nativeEvent);
+          setError(`Failed to load: ${nativeEvent.description || 'Unknown error'}`);
+          setLoading(false);
+        }}
+        onHttpError={(syntheticEvent) => {
+          const { nativeEvent } = syntheticEvent;
+          console.error('WebView HTTP error: ', nativeEvent);
+          setError(`HTTP Error: ${nativeEvent.statusCode}`);
+          setLoading(false);
+        }}
+        startInLoadingState={true}
+        renderLoading={() => (
+          <View style={styles.loadingContainer}>
+            <ActivityIndicator size="large" color="#2eac5f" />
+          </View>
+        )}
+      />
+    </SafeAreaView>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#FFFFFF',
+  },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: '#E5E5E5',
+  },
+  backButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: '#F8F8F8',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  titleContainer: {
+    flex: 1,
+    alignItems: 'center',
+    marginRight: 40, // Compensate for back button width
+  },
+  loader: {
+    marginLeft: 12,
+  },
+  webview: {
+    flex: 1,
+  },
+  loadingContainer: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#FFFFFF',
+  },
+  errorContainer: {
+    padding: 16,
+    backgroundColor: '#fee',
+    borderBottomWidth: 1,
+    borderBottomColor: '#fcc',
+  },
+  errorText: {
+    color: '#c00',
+    fontSize: 14,
+    marginBottom: 8,
+    fontFamily: 'Figtree',
+  },
+  retryButton: {
+    backgroundColor: '#2eac5f',
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    borderRadius: 8,
+    alignSelf: 'flex-start',
+  },
+  retryButtonText: {
+    color: '#fff',
+    fontSize: 14,
+    fontWeight: '600',
+    fontFamily: 'Figtree-SemiBold',
+  },
+});
+

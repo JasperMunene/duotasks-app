@@ -1,0 +1,76 @@
+{
+  "expo": {
+    "name": "duotasks",
+    "slug": "duotasks",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/logo.png",
+    "scheme": "duotasks",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.eslieh.duotasks",
+      "googleServicesFile": "./GoogleService-Info.plist"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "edgeToEdgeEnabled": true,
+      "package": "com.eslieh.duotasks",
+      "googleServicesFile": "./google-services.json"
+    },
+    "web": {
+      "bundler": "metro",
+      "output": "static",
+      "favicon": "./assets/images/favicon.png"
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/images/full.png",
+          "imageWidth": 200,
+          "resizeMode": "contain",
+          "backgroundColor": "#ffffff",
+          "preventAutoHide": true
+        }
+      ]
+    ],
+    "experiments": {
+      "typedRoutes": true
+    },
+    "extra": {
+      "eas": {
+        "projectId": "4e518d72-23e8-48b3-8951-ba931ba2700a"
+      },
+      "extra": {
+      "googleMapsApiKey": "AIzaSyBm6Enu-eA-AbZDqdOsenaInyDsIrT-62k"
+      },
+      "duotasks": {
+        "apiUrl": "https://api.duotasks.com",
+        "authUrl": "https://auth.duotasks.com",
+        "supportEmail": "",
+        "supportUrl": "https://support.duotasks.com",
+        "termsUrl": "https://duotasks.com/terms",
+        "privacyUrl": "https://duotasks.com/privacy", 
+
+        "appVersion": "1.0.0",
+        "appBuild": "1",
+        "appName": "Duotasks",
+        "appDescription": "A local marketplace connecting people with skills to those who need tasks done. Post a task or service, connect instantly, and get paid — all within your community.",
+        "appIcon": "./assets/images/logo.png",
+        "appSplash": "./assets/images/splash-icon.png",
+        "appTheme": {
+          "primaryColor": "#6200ee",
+          "secondaryColor": "#03dac6",
+          "backgroundColor": "#ffffff",
+          "textColor": "#000000"
+        }
+      }
+    }
+  }
+}
