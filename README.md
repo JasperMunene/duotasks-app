@@ -137,46 +137,18 @@ npm run dev:tailwind
 
 ---
 
-## 📂 Project Structure
+## � Screenshots
 
-```
-duotask/
-├── app/                          # Main application code
-│   ├── (auth)/                   # Authentication screens
-│   │   ├── login.tsx
-│   │   ├── signup.tsx
-│   │   ├── verify.tsx
-│   │   └── google-auth.tsx
-│   ├── (tabs)/                   # Main tab navigation
-│   │   ├── index.tsx             # Home/Browse tasks
-│   │   ├── browse.tsx
-│   │   ├── messages.tsx
-│   │   ├── my-tasks.tsx
-│   │   └── account.tsx
-│   ├── (screens)/                # Additional screens
-│   │   ├── post-task.tsx
-│   │   ├── profile.tsx
-│   │   ├── wallet.tsx
-│   │   ├── notifications.tsx
-│   │   └── edit-profile.tsx
-│   ├── components/               # Reusable components
-│   │   ├── TaskItem.tsx
-│   │   ├── TaskList.tsx
-│   │   ├── MapBottomSheet.tsx
-│   │   ├── ChatScreen.tsx
-│   │   └── ...
-│   ├── context/                  # React Context providers
-│   ├── hooks/                    # Custom React hooks
-│   ├── types/                    # TypeScript type definitions
-│   ├── utils/                    # Utility functions
-│   └── _layout.tsx               # Root layout
-├── assets/                       # Images, fonts, and static files
-├── android/                      # Android native code
-├── ios/                          # iOS native code
-├── app.json                      # Expo configuration
-├── package.json                  # Dependencies
-└── tailwind.config.js            # Tailwind configuration
-```
+<div align="center">
+  <img src="./assets/images/screen1.jpeg" alt="DuoTasks Home Screen" width="250" />
+  <img src="./assets/images/screen2.jpeg" alt="Task Details" width="250" />
+  <img src="./assets/images/screen3.jpeg" alt="Browse Tasks" width="250" />
+</div>
+
+<div align="center">
+  <img src="./assets/images/screen4.jpeg" alt="Messages" width="250" />
+  <img src="./assets/images/screen5.jpeg" alt="User Profile" width="250" />
+</div>
 
 ---
 
